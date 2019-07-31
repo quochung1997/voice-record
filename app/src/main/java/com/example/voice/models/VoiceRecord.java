@@ -1,5 +1,7 @@
 package com.example.voice.models;
 
+import android.os.Environment;
+
 public class VoiceRecord {
     public static String[] labels = {
             "cộng", "trừ", "nhân", "chia",
@@ -45,5 +47,11 @@ public class VoiceRecord {
         this.user = user;
         this.label = label;
         this.number = number;
+    }
+
+    public String getPath() {
+        return Environment.getExternalStorageDirectory().getAbsolutePath()+"/"+
+                this.getLabel()+"_"+user.getId()+"_"+user.getGender()+"_"+
+                String.format("%05d", number)+".wav";
     }
 }

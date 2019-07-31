@@ -124,7 +124,8 @@ public class RecordingAct extends AppCompatActivity {
                     String gender = user.getGender();
 
                     outputFile = Environment.getExternalStorageDirectory().getAbsolutePath()+"/"+
-                            record.getLabel()+"_"+userId+"_"+gender+"_"+String.format("%05d", recordId)+".wav";
+                            record.getLabel()+"_"+userId+"_"+gender+"_"+
+                            String.format("%05d", recordId)+".wav";
 
 
                     recorder = new WavRecorder(outputFile);
