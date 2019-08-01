@@ -21,6 +21,7 @@ import com.example.voice.threads.CountingRunnable;
 import com.example.voice.threads.RecordThr;
 import com.example.voice.threads.WavRecorderRunnable;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
@@ -44,6 +45,8 @@ public class RecordingAct extends AppCompatActivity {
 
     boolean isRecording;
 
+    MediaRecorder myAudioRecorder;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,11 +59,9 @@ public class RecordingAct extends AppCompatActivity {
         txtTxt = findViewById(R.id.recordingAct_txtTxt);
 
         Intent thisIntent = getIntent();
-
         userId = thisIntent.getStringExtra("id");
-
         ArrayList<VoiceRecord> allRecords = recordDao.getAll();
-
+        user = userDao.get(userId);
         records = new ArrayList<>();
         map = new HashMap<>();
 
@@ -80,15 +81,10 @@ public class RecordingAct extends AppCompatActivity {
             map.put(tmLabel, num);
         }
 
-        user = userDao.get(userId);
-
-        //Toast.makeText(getApplicationContext(), records.size()+"", Toast.LENGTH_LONG).show();
-
         startBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (isRecording) {
-                    recorder.stopRecording();
                     startBtn.setText("START");
 
                     isRecording = false;
@@ -123,15 +119,10 @@ public class RecordingAct extends AppCompatActivity {
                     records.add(record);
                     String gender = user.getGender();
 
-                    outputFile = Environment.getExternalStorageDirectory().getAbsolutePath()+"/"+
-                            record.getLabel()+"_"+userId+"_"+gender+"_"+
-                            String.format("%05d", recordId)+".wav";
+                    outputFile = record.getPath();
 
+                    Toast.makeText(getApplicationContext(), outputFile, Toast.LENGTH_LONG).show();
 
-                    recorder = new WavRecorder(outputFile);
-                    recorder.startRecording();
-
-                    //Toast.makeText(getApplicationContext(), "Started record...", Toast.LENGTH_LONG).show();
 
                     startBtn.setText("DONE");
 
