@@ -66,5 +66,14 @@ public class RecordManagerAct extends AppCompatActivity {
                 startActivity(toRecording);
             }
         });
+
+        showRecordsBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent toListLabels = new Intent(getApplicationContext(), ListLabelsAct.class);
+                toListLabels.putExtra("id", userId);
+                startActivity(toListLabels);
+            }
+        });
     }
 }
