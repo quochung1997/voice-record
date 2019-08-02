@@ -4,15 +4,15 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/labelLayout_labelName"
+        android:id="@+id/recordLayout_recordTitle"
         android:layout_width="match_parent"
-        android:layout_height="47dp"
-        android:textColor="#25383C"
+        android:layout_height="44dp"
         android:text="TextView"
+        android:textColor="#25383C"
         android:textSize="24sp" />
 
     <TextView
-        android:id="@+id/labelLayout_recordsCount"
+        android:id="@+id/recordLayout_recordPath"
         android:layout_width="match_parent"
         android:textColor="#25383C"
         android:layout_height="wrap_content"

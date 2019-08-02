@@ -51,7 +51,7 @@ public class VoiceRecord {
 
     public String getPath() {
         return Environment.getExternalStorageDirectory().getAbsolutePath()+"/"+
-                this.getLabel()+"_"+user.getId()+"_"+user.getGender()+"_"+
-                String.format("%05d", number)+".wav";
+                this.getLabel().replaceAll("\\s+","")+"_"+user.getId()+"_"+user.getGender()+"_"+
+                String.format("%05d", number)+".3gp";
     }
 }

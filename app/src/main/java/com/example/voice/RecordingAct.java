@@ -87,6 +87,10 @@ public class RecordingAct extends AppCompatActivity {
                 if (isRecording) {
                     startBtn.setText("START");
 
+                    myAudioRecorder.stop();
+                    myAudioRecorder.release();
+                    myAudioRecorder = null;
+
                     isRecording = false;
                     return;
                 }
@@ -111,21 +115,38 @@ public class RecordingAct extends AppCompatActivity {
                     map.put(label, num);
 
                     VoiceRecord record = new VoiceRecord();
-                    record.setUser(new User(userId, null));
+                    record.setUser(new User(userId, user.getGender()));
                     record.setLabel(labelIndex);
 
                     int recordId = recordDao.insert(record);
+
+                    record.setNumber(recordId);
 
                     records.add(record);
                     String gender = user.getGender();
 
                     outputFile = record.getPath();
-
                     Toast.makeText(getApplicationContext(), outputFile, Toast.LENGTH_LONG).show();
+
+                    myAudioRecorder = new MediaRecorder();
+                    myAudioRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+                    myAudioRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
+                    myAudioRecorder.setAudioEncoder(MediaRecorder.OutputFormat.AMR_NB);
+                    myAudioRecorder.setOutputFile(outputFile);
+
+                    try {
+                        Thread.sleep(100);
+
+                        myAudioRecorder.prepare();
+                        myAudioRecorder.start();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
 
 
                     startBtn.setText("DONE");
-
                     isRecording = true;
 
                 }
