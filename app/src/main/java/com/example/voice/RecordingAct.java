@@ -43,7 +43,7 @@ public class RecordingAct extends AppCompatActivity {
     User user;
     String userId;
 
-    Button startBtn;
+    Button startBtn, nextBtn;
     TextView txtTxt;
 
     HashMap<String, Integer> map;
@@ -61,82 +61,51 @@ public class RecordingAct extends AppCompatActivity {
         setContentView(R.layout.activity_recording);
 
 
-        if (ContextCompat.checkSelfPermission(this,
-                Manifest.permission.RECORD_AUDIO)
-                != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[] {
-                    Manifest.permission.RECORD_AUDIO
-            }, REQUEST_AUDIORECORD);
-        }
-
-        if (ContextCompat.checkSelfPermission(this,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[] {
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE
-            }, REQUEST_STORAGE);
-        }
-
-
-        isRecording = false;
+        requestPermission();
 
         startBtn = findViewById(R.id.recordingAct_startBtn);
+        nextBtn = findViewById(R.id.recordingAct_nextBtn);
         txtTxt = findViewById(R.id.recordingAct_txtTxt);
 
+        initRecordInfo();
 
-
-        Intent thisIntent = getIntent();
-        userId = thisIntent.getStringExtra("id");
-        ArrayList<VoiceRecord> allRecords = recordDao.getAll();
-        user = userDao.get(userId);
-        records = new ArrayList<>();
-        map = new HashMap<>();
-
-        for (VoiceRecord record: allRecords) {
-            if (record.getUser().getId().equals(userId))
-                records.add(record);
+        if (nextWord()) {
+            startBtn.setEnabled(true);
         }
 
-        for (String label : VoiceRecord.labels) {
-            map.put(label, 0);
-        }
 
-        for (VoiceRecord record: records) {
-            String tmLabel = record.getLabel();
-            int num = map.containsKey(tmLabel) ? map.get(tmLabel) : 0;
-            num++;
-            map.put(tmLabel, num);
-        }
-
+        nextBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (nextWord()) {
+                    startBtn.setEnabled(true);
+                }
+            }
+        });
 
 
         startBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (isRecording) {
-                    startBtn.setText("START");
+
+                wavRecorder = new WavRecorder(outputFile);
+
+                try {
+                    Thread.sleep(100);
+                    wavRecorder.startRecording();
+
+                    Thread.sleep(1300);
 
                     wavRecorder.stopRecording();
-
-                    isRecording = false;
-                    return;
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
 
-                if (nextWord()) {
+                Toast.makeText(getApplicationContext(), "Saved record in "+outputFile, Toast.LENGTH_LONG).show();
 
-                    wavRecorder = new WavRecorder(outputFile);
+                startBtn.setEnabled(false);
 
-                    try {
-                        Thread.sleep(100);
-                        wavRecorder.startRecording();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
 
-                    startBtn.setText("DONE");
-                    isRecording = true;
-
-                }
             }
         });
 
@@ -168,6 +137,25 @@ public class RecordingAct extends AppCompatActivity {
                 }
                 return;
             }
+        }
+    }
+
+
+    void requestPermission() {
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.RECORD_AUDIO)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[] {
+                    Manifest.permission.RECORD_AUDIO
+            }, REQUEST_AUDIORECORD);
+        }
+
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[] {
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+            }, REQUEST_STORAGE);
         }
     }
 
@@ -208,6 +196,33 @@ public class RecordingAct extends AppCompatActivity {
 
             return true;
 
+        }
+    }
+
+
+    void initRecordInfo() {
+        isRecording = false;
+        Intent thisIntent = getIntent();
+        userId = thisIntent.getStringExtra("id");
+        ArrayList<VoiceRecord> allRecords = recordDao.getAll();
+        user = userDao.get(userId);
+        records = new ArrayList<>();
+        map = new HashMap<>();
+
+        for (VoiceRecord record: allRecords) {
+            if (record.getUser().getId().equals(userId))
+                records.add(record);
+        }
+
+        for (String label : VoiceRecord.labels) {
+            map.put(label, 0);
+        }
+
+        for (VoiceRecord record: records) {
+            String tmLabel = record.getLabel();
+            int num = map.containsKey(tmLabel) ? map.get(tmLabel) : 0;
+            num++;
+            map.put(tmLabel, num);
         }
     }
 
