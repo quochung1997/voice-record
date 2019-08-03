@@ -16,7 +16,7 @@ public class AudioRecordThread implements Runnable {
 
     private static final String TAG = AudioRecordThread.class.getSimpleName();
 
-    private static final int SAMPLE_RATE = 44100;
+    private static final int SAMPLE_RATE = 16000;
     private static final int SAMPLE_RATE_INDEX = 4;
     private static final int CHANNELS = 1;
     private static final int BIT_RATE = 32000;

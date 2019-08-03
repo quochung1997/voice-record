@@ -21,6 +21,7 @@ import com.example.voice.models.VoiceRecord;
 import com.example.voice.recordhelper.WavRecorder;
 import com.example.voice.sqlites.UserSqliteDao;
 import com.example.voice.sqlites.VoiceRecordSqliteDao;
+import com.example.voice.threads.AudioRecordThread;
 import com.example.voice.threads.CountingRunnable;
 import com.example.voice.threads.RecordThr;
 import com.example.voice.threads.WavRecorderRunnable;
@@ -49,11 +50,9 @@ public class RecordingAct extends AppCompatActivity {
 
     String outputFile;
 
-    WavRecorder recorder;
-
     boolean isRecording;
 
-    MediaRecorder myAudioRecorder;
+    WavRecorder wavRecorder;
 
 
     @Override
@@ -113,9 +112,7 @@ public class RecordingAct extends AppCompatActivity {
                 if (isRecording) {
                     startBtn.setText("START");
 
-                    myAudioRecorder.stop();
-                    myAudioRecorder.release();
-                    myAudioRecorder = null;
+                    wavRecorder.stopRecording();
 
                     isRecording = false;
                     return;
@@ -152,25 +149,16 @@ public class RecordingAct extends AppCompatActivity {
                     String gender = user.getGender();
 
                     outputFile = record.getPath();
-                    Toast.makeText(getApplicationContext(), outputFile, Toast.LENGTH_LONG).show();
+                    //Toast.makeText(getApplicationContext(), outputFile, Toast.LENGTH_LONG).show();
 
-                    myAudioRecorder = new MediaRecorder();
-                    myAudioRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-                    myAudioRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
-                    myAudioRecorder.setAudioEncoder(MediaRecorder.OutputFormat.AMR_NB);
-                    myAudioRecorder.setOutputFile(outputFile);
+                    wavRecorder = new WavRecorder(outputFile);
 
                     try {
                         Thread.sleep(100);
-
-                        myAudioRecorder.prepare();
-                        myAudioRecorder.start();
+                        wavRecorder.startRecording();
                     } catch (InterruptedException e) {
                         e.printStackTrace();
-                    } catch (IOException e) {
-                        e.printStackTrace();
                     }
-
 
                     startBtn.setText("DONE");
                     isRecording = true;
