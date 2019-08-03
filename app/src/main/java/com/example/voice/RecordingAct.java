@@ -83,6 +83,8 @@ public class RecordingAct extends AppCompatActivity {
         startBtn = findViewById(R.id.recordingAct_startBtn);
         txtTxt = findViewById(R.id.recordingAct_txtTxt);
 
+
+
         Intent thisIntent = getIntent();
         userId = thisIntent.getStringExtra("id");
         ArrayList<VoiceRecord> allRecords = recordDao.getAll();
@@ -106,6 +108,8 @@ public class RecordingAct extends AppCompatActivity {
             map.put(tmLabel, num);
         }
 
+
+
         startBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -118,38 +122,7 @@ public class RecordingAct extends AppCompatActivity {
                     return;
                 }
 
-                if (records.size() >= VoiceRecord.labels.length*20) {
-                    Toast.makeText(getApplicationContext(), "ENOUGH RECORD", Toast.LENGTH_LONG).show();
-                } else {
-                    int labelIndex = -1;
-
-                    while (true) {
-                        Random rand = new Random();
-
-                        labelIndex = rand.nextInt(VoiceRecord.labels.length);
-
-                        if (map.get(VoiceRecord.labels[labelIndex]) < 20) break;
-                    }
-
-                    String label = VoiceRecord.labels[labelIndex];
-
-                    int num = map.get(label)+1;
-                    txtTxt.setText(label);
-                    map.put(label, num);
-
-                    VoiceRecord record = new VoiceRecord();
-                    record.setUser(new User(userId, user.getGender()));
-                    record.setLabel(labelIndex);
-
-                    int recordId = recordDao.insert(record);
-
-                    record.setNumber(recordId);
-
-                    records.add(record);
-                    String gender = user.getGender();
-
-                    outputFile = record.getPath();
-                    //Toast.makeText(getApplicationContext(), outputFile, Toast.LENGTH_LONG).show();
+                if (nextWord()) {
 
                     wavRecorder = new WavRecorder(outputFile);
 
@@ -197,4 +170,45 @@ public class RecordingAct extends AppCompatActivity {
             }
         }
     }
+
+
+    boolean nextWord() {
+        if (records.size() >= VoiceRecord.labels.length*20) {
+            Toast.makeText(getApplicationContext(), "ENOUGH RECORD", Toast.LENGTH_LONG).show();
+            return false;
+        } else {
+            int labelIndex = -1;
+
+            while (true) {
+                Random rand = new Random();
+
+                labelIndex = rand.nextInt(VoiceRecord.labels.length);
+
+                if (map.get(VoiceRecord.labels[labelIndex]) < 20) break;
+            }
+
+            String label = VoiceRecord.labels[labelIndex];
+
+            int num = map.get(label)+1;
+            txtTxt.setText(label);
+            map.put(label, num);
+
+            VoiceRecord record = new VoiceRecord();
+            record.setUser(new User(userId, user.getGender()));
+            record.setLabel(labelIndex);
+
+            int recordId = recordDao.insert(record);
+
+            record.setNumber(recordId);
+
+            records.add(record);
+            String gender = user.getGender();
+
+            outputFile = record.getPath();
+
+            return true;
+
+        }
+    }
+
 }
