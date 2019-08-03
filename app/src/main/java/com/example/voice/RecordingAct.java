@@ -1,8 +1,12 @@
 package com.example.voice;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.media.MediaRecorder;
 import android.os.Bundle;
 import android.os.Environment;
@@ -27,6 +31,10 @@ import java.util.HashMap;
 import java.util.Random;
 
 public class RecordingAct extends AppCompatActivity {
+
+    static final int REQUEST_AUDIORECORD = 1;
+    static final int REQUEST_STORAGE = 2;
+
     final VoiceRecordSqliteDao recordDao = new VoiceRecordSqliteDao(this);
     final UserSqliteDao userDao = new UserSqliteDao(this);
 
@@ -52,6 +60,24 @@ public class RecordingAct extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recording);
+
+
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.RECORD_AUDIO)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[] {
+                    Manifest.permission.RECORD_AUDIO
+            }, REQUEST_AUDIORECORD);
+        }
+
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[] {
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+            }, REQUEST_STORAGE);
+        }
+
 
         isRecording = false;
 
@@ -154,5 +180,33 @@ public class RecordingAct extends AppCompatActivity {
         });
 
 
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String[] permissions, int[] grantResults) {
+        switch (requestCode) {
+            case REQUEST_AUDIORECORD: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Toast.makeText(getApplicationContext(), "AUDIO REQUEST ACCESSED", Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(getApplicationContext(), "AUDIO REQUEST DENIED", Toast.LENGTH_LONG).show();
+                }
+                return;
+            }
+
+            case REQUEST_STORAGE: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Toast.makeText(getApplicationContext(), "STORAGE REQUEST ACCESSED", Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(getApplicationContext(), "STORAGE REQUEST DENIED", Toast.LENGTH_LONG).show();
+                }
+                return;
+            }
+        }
     }
 }

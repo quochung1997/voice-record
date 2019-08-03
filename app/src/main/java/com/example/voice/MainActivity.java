@@ -1,6 +1,7 @@
 package com.example.voice;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import android.content.Context;
 import android.content.Intent;
@@ -28,6 +29,10 @@ public class MainActivity extends AppCompatActivity {
 
 //        userDao.drop();
 //        recordDao.drop();
+
+
+
+
 
         final SharedPreferences preferences = getSharedPreferences("id", Context.MODE_PRIVATE);
         final Intent thisIntent = getIntent();
