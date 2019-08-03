@@ -7,10 +7,7 @@ import androidx.core.content.ContextCompat;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.media.MediaRecorder;
 import android.os.Bundle;
-import android.os.Environment;
-import android.service.autofill.UserData;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -21,12 +18,8 @@ import com.example.voice.models.VoiceRecord;
 import com.example.voice.recordhelper.WavRecorder;
 import com.example.voice.sqlites.UserSqliteDao;
 import com.example.voice.sqlites.VoiceRecordSqliteDao;
-import com.example.voice.threads.AudioRecordThread;
-import com.example.voice.threads.CountingRunnable;
-import com.example.voice.threads.RecordThr;
-import com.example.voice.threads.WavRecorderRunnable;
+import com.example.voice.threads.WaitingRunnable;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
@@ -43,7 +36,7 @@ public class RecordingAct extends AppCompatActivity {
     User user;
     String userId;
 
-    Button startBtn, nextBtn;
+    Button startBtn;
     TextView txtTxt;
 
     HashMap<String, Integer> map;
@@ -64,47 +57,25 @@ public class RecordingAct extends AppCompatActivity {
         requestPermission();
 
         startBtn = findViewById(R.id.recordingAct_startBtn);
-        nextBtn = findViewById(R.id.recordingAct_nextBtn);
         txtTxt = findViewById(R.id.recordingAct_txtTxt);
 
         initRecordInfo();
-
-        if (nextWord()) {
-            startBtn.setEnabled(true);
-        }
-
-
-        nextBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (nextWord()) {
-                    startBtn.setEnabled(true);
-                }
-            }
-        });
 
 
         startBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                wavRecorder = new WavRecorder(outputFile);
+                if (nextWord()) {
 
-                try {
-                    Thread.sleep(100);
-                    wavRecorder.startRecording();
+                    Thread thread = new Thread(new WaitingRunnable(outputFile));
 
-                    Thread.sleep(1300);
+                    thread.start();
 
-                    wavRecorder.stopRecording();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+                    Toast.makeText(getApplicationContext(), "Saved record in "+outputFile, Toast.LENGTH_LONG).show();
+
+                    //startBtn.setEnabled(false);
                 }
-
-                Toast.makeText(getApplicationContext(), "Saved record in "+outputFile, Toast.LENGTH_LONG).show();
-
-                startBtn.setEnabled(false);
-
 
             }
         });
