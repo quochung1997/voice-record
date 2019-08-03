@@ -5,6 +5,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -68,13 +69,9 @@ public class RecordingAct extends AppCompatActivity {
 
                 if (nextWord()) {
 
-                    Thread thread = new Thread(new WaitingRunnable(outputFile));
+                    RecordAsync recordAsync = new RecordAsync(RecordingAct.this, outputFile);
 
-                    thread.start();
-
-                    Toast.makeText(getApplicationContext(), "Saved record in "+outputFile, Toast.LENGTH_LONG).show();
-
-                    //startBtn.setEnabled(false);
+                    recordAsync.execute();
                 }
 
             }
