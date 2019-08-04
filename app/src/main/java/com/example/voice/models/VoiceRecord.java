@@ -10,6 +10,13 @@ public class VoiceRecord {
             "tất cả", "xóa"
     };
 
+    public static String[] labels_save = {
+            "cong", "tru", "nhan", "chia",
+            "khong", "mot(1)", "hai", "ba", "bon", "nam", "sau", "bay", "tam", "chin", "muoi(10)",
+            "muoi", "mot", "tu", "tram", "nghin", "trieu",
+            "tatca", "xoa"
+    };
+
     User user;
     int label;
     int number;
@@ -26,6 +33,10 @@ public class VoiceRecord {
 
     public String getLabel() {
         return labels[label];
+    }
+
+    public String getLabelSave() {
+        return labels_save[label];
     }
 
     public void setLabel(int label) {
@@ -51,7 +62,7 @@ public class VoiceRecord {
 
     public String getPath() {
         return Environment.getExternalStorageDirectory().getAbsolutePath()+"/voice_records/"+
-                this.getLabel().replaceAll("\\s+","")+"_"+user.getId()+"_"+user.getGender()+"_"+
+                this.getLabelSave()+"_"+user.getId()+"_"+user.getGender()+"_"+
                 String.format("%05d", number)+".wav";
     }
 }

@@ -9,15 +9,14 @@ import android.widget.Toast;
 
 import com.example.voice.recordhelper.WavRecorder;
 
-public class RecordAsync extends AsyncTask<Void, Integer, Void> {
+public class ReplaceRecordAsyn extends AsyncTask<Void, Integer, Void> {
     Activity contextParent;
     WavRecorder recorder;
 
 
-    public RecordAsync(Activity contextParent, String outputFile) {
+    public ReplaceRecordAsyn(Activity contextParent, String outputFile) {
         this.contextParent = contextParent;
         this.recorder = new WavRecorder(outputFile);
-
 
     }
 
@@ -26,12 +25,8 @@ public class RecordAsync extends AsyncTask<Void, Integer, Void> {
     protected void onPreExecute() {
         super.onPreExecute();
         recorder.startRecording();
-        Button startBtn = contextParent.findViewById(R.id.recordingAct_startBtn);
-        Button replayBtn = contextParent.findViewById(R.id.recordingAct_replayBtn);
-        Button replaceBtn = contextParent.findViewById(R.id.recordingAct_replaceBtn);
+        Button startBtn = contextParent.findViewById(R.id.replaceAct_startBtn);
         startBtn.setEnabled(false);
-        replayBtn.setEnabled(false);
-        replaceBtn.setEnabled(false);
 
         SystemClock.sleep(300);
     }
@@ -52,7 +47,7 @@ public class RecordAsync extends AsyncTask<Void, Integer, Void> {
     protected void onProgressUpdate(Integer... values) {
         super.onProgressUpdate(values);
 
-        ProgressBar progressBar = contextParent.findViewById(R.id.recordingAct_progressBar);
+        ProgressBar progressBar = contextParent.findViewById(R.id.replaceAct_progress);
 
         int number = values[0];
 
@@ -68,16 +63,10 @@ public class RecordAsync extends AsyncTask<Void, Integer, Void> {
         recorder.stopRecording();
 
         SystemClock.sleep(300);
-
-        Button startBtn = contextParent.findViewById(R.id.recordingAct_startBtn);
-        Button replayBtn = contextParent.findViewById(R.id.recordingAct_replayBtn);
-        Button replaceBtn = contextParent.findViewById(R.id.recordingAct_replaceBtn);
+        Button startBtn = contextParent.findViewById(R.id.replaceAct_startBtn);
+        ProgressBar progressBar = contextParent.findViewById(R.id.replaceAct_progress);
 
         startBtn.setEnabled(true);
-        replayBtn.setEnabled(true);
-        replaceBtn.setEnabled(true);
-
-        ProgressBar progressBar = contextParent.findViewById(R.id.recordingAct_progressBar);
         progressBar.setProgress(0);
 
         Toast.makeText(contextParent, "Saved", Toast.LENGTH_SHORT).show();

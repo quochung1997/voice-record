@@ -3,7 +3,9 @@ package com.example.voice;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.media.SoundPool;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -26,12 +28,13 @@ public class RecordInfoAct extends AppCompatActivity {
     final VoiceRecordSqliteDao recordDao = new VoiceRecordSqliteDao(this);
     final UserSqliteDao userDao = new UserSqliteDao(this);
 
-    Button playBtn, deleteBtn;
+    Button playBtn, deleteBtn, replaceBtn;
     TextView labelTxt, idTxt, pathTxt;
 
     boolean isPlaying;
 
-    MediaPlayer mediaPlayer;
+    SoundPool soundPool;
+    int soundNumber;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,44 +43,8 @@ public class RecordInfoAct extends AppCompatActivity {
 
         initData();
         initComponents();
-
-
-        playBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                mediaPlayer = new MediaPlayer();
-                try {
-                    mediaPlayer.setDataSource(voiceRecord.getPath());
-                    mediaPlayer.prepareAsync();
-                    mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-                        @Override
-                        public void onPrepared(MediaPlayer mp) {
-                            mediaPlayer.start();
-                        }
-                    });
-                    Toast.makeText(getApplicationContext(), "Playing Audio", Toast.LENGTH_LONG)
-                            .show();
-                } catch (Exception e) {
-                    Toast.makeText(getApplicationContext(), "Playing Errors", Toast.LENGTH_LONG)
-                            .show();
-                }
-            }
-        });
-
-
-        deleteBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                File file = new File(voiceRecord.getPath());
-
-                file.delete();
-
-                recordDao.delete(voiceRecord.getNumber());
-
-                finish();
-            }
-        });
+        initSoundPool();
+        setButtonEvents();
 
     }
 
@@ -100,9 +67,16 @@ public class RecordInfoAct extends AppCompatActivity {
         isPlaying = false;
     }
 
+    void initSoundPool() {
+        soundPool = new SoundPool(4, AudioManager.STREAM_VOICE_CALL, 0);
+
+        soundNumber = soundPool.load(voiceRecord.getPath(), 1);
+    }
+
     void initComponents() {
         playBtn = findViewById(R.id.recordInfo_playBtn);
         deleteBtn = findViewById(R.id.recordInfo_deleteBtn);
+        replaceBtn = findViewById(R.id.recordInfo_replaceBtn);
 
         labelTxt = findViewById(R.id.recordInfo_labelTxt);
         idTxt = findViewById(R.id.recordInfo_recordIdTxt);
@@ -111,5 +85,38 @@ public class RecordInfoAct extends AppCompatActivity {
         labelTxt.setText(voiceRecord.getLabel());
         idTxt.setText(voiceRecord.getNumber()+"");
         pathTxt.setText(voiceRecord.getPath());
+    }
+
+    void setButtonEvents() {
+        playBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                soundPool.play(soundNumber, 0.99f, 0.99f, 0, 0, 1);
+            }
+        });
+
+
+        deleteBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                File file = new File(voiceRecord.getPath());
+
+                file.delete();
+
+                recordDao.delete(voiceRecord.getNumber());
+
+                finish();
+            }
+        });
+
+        replaceBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent toReplace = new Intent(getApplicationContext(), ReplaceAct.class);
+                toReplace.putExtra("path", voiceRecord.getPath());
+                toReplace.putExtra("text", voiceRecord.getLabel());
+                startActivity(toReplace);
+            }
+        });
     }
 }

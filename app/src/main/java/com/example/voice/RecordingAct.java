@@ -8,6 +8,8 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.media.AudioManager;
+import android.media.SoundPool;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -34,15 +36,15 @@ public class RecordingAct extends AppCompatActivity {
     User user;
     String userId;
 
-    Button startBtn;
+    Button startBtn, replaceBtn, replayBtn;
     TextView txtTxt;
 
     HashMap<String, Integer> map;
 
     String outputFile;
 
-    boolean isRecording;
-
+    SoundPool soundPool;
+    int soundNumber;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +53,8 @@ public class RecordingAct extends AppCompatActivity {
 
 
         startBtn = findViewById(R.id.recordingAct_startBtn);
+        replayBtn = findViewById(R.id.recordingAct_replayBtn);
+        replaceBtn = findViewById(R.id.recordingAct_replaceBtn);
         txtTxt = findViewById(R.id.recordingAct_txtTxt);
 
         initRecordInfo();
@@ -59,14 +63,25 @@ public class RecordingAct extends AppCompatActivity {
         startBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 if (nextWord()) {
-
                     RecordAsync recordAsync = new RecordAsync(RecordingAct.this, outputFile);
-
                     recordAsync.execute();
                 }
+            }
+        });
 
+        replaceBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                RecordAsync async = new RecordAsync(RecordingAct.this, outputFile);
+                async.execute();
+            }
+        });
+
+        replayBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                soundPool.play(soundNumber, 0.99f, 0.99f, 0, 0, 1);
             }
         });
 
@@ -108,6 +123,9 @@ public class RecordingAct extends AppCompatActivity {
 
             outputFile = record.getPath();
 
+            soundPool = new SoundPool(4, AudioManager.STREAM_VOICE_CALL, 0);
+            soundNumber = soundPool.load(outputFile, 1);
+
             return true;
 
         }
@@ -115,7 +133,6 @@ public class RecordingAct extends AppCompatActivity {
 
 
     void initRecordInfo() {
-        isRecording = false;
         Intent thisIntent = getIntent();
         userId = thisIntent.getStringExtra("id");
         ArrayList<VoiceRecord> allRecords = recordDao.getAll();

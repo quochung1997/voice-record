@@ -14,7 +14,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".RecordInfoAct"></activity>
+        <activity android:name=".ReplaceAct"></activity>
+        <activity android:name=".RecordInfoAct" />
         <activity android:name=".ListRecordsAct" />
         <activity android:name=".ListLabelsAct" />
         <activity android:name=".RecordingAct" />

@@ -4,26 +4,26 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".RecordingAct">
+    tools:context=".ReplaceAct">
 
     <TextView
-        android:id="@+id/recordingAct_txtTxt"
+        android:id="@+id/replaceAct_txtTxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
-        android:layout_marginTop="64dp"
+        android:layout_marginTop="88dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        android:text='"NOTHING"'
-        android:textSize="36dp"
+        android:text="TextView"
+        android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/recordingAct_startBtn"
+        android:id="@+id/replaceAct_startBtn"
         android:layout_width="155dp"
         android:layout_height="45dp"
         android:layout_marginStart="8dp"
@@ -31,53 +31,39 @@
         android:layout_marginTop="56dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        android:text="next"
+        android:text="start"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/recordingAct_progressBar" />
+        app:layout_constraintTop_toBottomOf="@+id/replaceAct_progress" />
 
     <ProgressBar
-        android:id="@+id/recordingAct_progressBar"
+        android:id="@+id/replaceAct_progress"
         style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="194dp"
-        android:layout_height="25dp"
+        android:layout_width="197dp"
+        android:layout_height="20dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="64dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/recordingAct_txtTxt" />
+        app:layout_constraintTop_toBottomOf="@+id/replaceAct_txtTxt" />
 
     <Button
-        android:id="@+id/recordingAct_replayBtn"
+        android:id="@+id/replaceAct_doneBtn"
         android:layout_width="155dp"
         android:layout_height="45dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="32dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        android:text="replay"
+        android:text="done"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/recordingAct_startBtn" />
-
-    <Button
-        android:id="@+id/recordingAct_replaceBtn"
-        android:layout_width="155dp"
-        android:layout_height="45dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:text="replace"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/recordingAct_replayBtn" />
-
+        app:layout_constraintTop_toBottomOf="@+id/replaceAct_startBtn" />
 </androidx.constraintlayout.widget.ConstraintLayout>
