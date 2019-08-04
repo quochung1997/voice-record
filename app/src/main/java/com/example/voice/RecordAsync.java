@@ -37,7 +37,7 @@ public class RecordAsync extends AsyncTask<Void, Integer, Void> {
     protected Void doInBackground(Void... params) {
 
         for (int i = 0; i <= 10; i++) {
-            SystemClock.sleep(100);
+            SystemClock.sleep(200);
             publishProgress(i);
         }
         return null;

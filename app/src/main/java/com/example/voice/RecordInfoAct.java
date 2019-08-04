@@ -15,6 +15,7 @@ import com.example.voice.models.VoiceRecord;
 import com.example.voice.sqlites.UserSqliteDao;
 import com.example.voice.sqlites.VoiceRecordSqliteDao;
 
+import java.io.File;
 import java.util.ArrayList;
 
 public class RecordInfoAct extends AppCompatActivity {
@@ -37,36 +38,8 @@ public class RecordInfoAct extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_record_info);
 
-        playBtn = findViewById(R.id.recordInfo_playBtn);
-        deleteBtn = findViewById(R.id.recordInfo_deleteBtn);
-
-        labelTxt = findViewById(R.id.recordInfo_labelTxt);
-        idTxt = findViewById(R.id.recordInfo_recordIdTxt);
-        pathTxt = findViewById(R.id.recordInfo_pathTxt);
-
-
-        Intent thisIntent = getIntent();
-        int recordId = thisIntent.getIntExtra("recordId", 0);
-
-        records = recordDao.getAll();
-
-        for (VoiceRecord vr: records) {
-            if (vr.getNumber() == recordId) {
-                voiceRecord = vr;
-                break;
-            }
-        }
-
-        User user = userDao.get(voiceRecord.getUser().getId());
-        voiceRecord.setUser(user);
-
-
-        labelTxt.setText(voiceRecord.getLabel());
-        idTxt.setText(voiceRecord.getNumber()+"");
-        pathTxt.setText(voiceRecord.getPath());
-
-
-        isPlaying = false;
+        initData();
+        initComponents();
 
 
         playBtn.setOnClickListener(new View.OnClickListener() {
@@ -83,12 +56,60 @@ public class RecordInfoAct extends AppCompatActivity {
                             mediaPlayer.start();
                         }
                     });
-                    Toast.makeText(getApplicationContext(), "Playing Audio", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Playing Audio", Toast.LENGTH_LONG)
+                            .show();
                 } catch (Exception e) {
-                    Toast.makeText(getApplicationContext(), "Playing Errors", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Playing Errors", Toast.LENGTH_LONG)
+                            .show();
                 }
             }
         });
 
+
+        deleteBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                File file = new File(voiceRecord.getPath());
+
+                file.delete();
+
+                recordDao.delete(voiceRecord.getNumber());
+
+                finish();
+            }
+        });
+
+    }
+
+    void initData() {
+        Intent thisIntent = getIntent();
+        int recordId = thisIntent.getIntExtra("recordId", 0);
+
+        records = recordDao.getAll();
+
+        for (VoiceRecord vr: records) {
+            if (vr.getNumber() == recordId) {
+                voiceRecord = vr;
+                break;
+            }
+        }
+
+        User user = userDao.get(voiceRecord.getUser().getId());
+        voiceRecord.setUser(user);
+
+        isPlaying = false;
+    }
+
+    void initComponents() {
+        playBtn = findViewById(R.id.recordInfo_playBtn);
+        deleteBtn = findViewById(R.id.recordInfo_deleteBtn);
+
+        labelTxt = findViewById(R.id.recordInfo_labelTxt);
+        idTxt = findViewById(R.id.recordInfo_recordIdTxt);
+        pathTxt = findViewById(R.id.recordInfo_pathTxt);
+
+        labelTxt.setText(voiceRecord.getLabel());
+        idTxt.setText(voiceRecord.getNumber()+"");
+        pathTxt.setText(voiceRecord.getPath());
     }
 }

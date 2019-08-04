@@ -27,9 +27,6 @@ import java.util.Random;
 
 public class RecordingAct extends AppCompatActivity {
 
-    static final int REQUEST_AUDIORECORD = 1;
-    static final int REQUEST_STORAGE = 2;
-
     final VoiceRecordSqliteDao recordDao = new VoiceRecordSqliteDao(this);
     final UserSqliteDao userDao = new UserSqliteDao(this);
 
@@ -46,16 +43,12 @@ public class RecordingAct extends AppCompatActivity {
 
     boolean isRecording;
 
-    WavRecorder wavRecorder;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recording);
 
-
-        requestPermission();
 
         startBtn = findViewById(R.id.recordingAct_startBtn);
         txtTxt = findViewById(R.id.recordingAct_txtTxt);
@@ -78,53 +71,6 @@ public class RecordingAct extends AppCompatActivity {
         });
 
 
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           String[] permissions, int[] grantResults) {
-        switch (requestCode) {
-            case REQUEST_AUDIORECORD: {
-                // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(getApplicationContext(), "AUDIO REQUEST ACCESSED", Toast.LENGTH_LONG).show();
-                } else {
-                    Toast.makeText(getApplicationContext(), "AUDIO REQUEST DENIED", Toast.LENGTH_LONG).show();
-                }
-                return;
-            }
-
-            case REQUEST_STORAGE: {
-                // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(getApplicationContext(), "STORAGE REQUEST ACCESSED", Toast.LENGTH_LONG).show();
-                } else {
-                    Toast.makeText(getApplicationContext(), "STORAGE REQUEST DENIED", Toast.LENGTH_LONG).show();
-                }
-                return;
-            }
-        }
-    }
-
-
-    void requestPermission() {
-        if (ContextCompat.checkSelfPermission(this,
-                Manifest.permission.RECORD_AUDIO)
-                != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[] {
-                    Manifest.permission.RECORD_AUDIO
-            }, REQUEST_AUDIORECORD);
-        }
-
-        if (ContextCompat.checkSelfPermission(this,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[] {
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE
-            }, REQUEST_STORAGE);
-        }
     }
 
 
