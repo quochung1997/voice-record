@@ -85,14 +85,9 @@ public class RecordingAct extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                try {
-                    soundPool = new SoundPool(4, AudioManager.STREAM_VOICE_CALL, 0);
-                    soundNumber = soundPool.load(outputFile, 1);
-                    Log.d("path", outputFile);
-                    soundPool.play(soundNumber, 0.99f, 0.99f, 0, 0, 1);
-                } catch (Exception e) {
-                    Toast.makeText(getApplicationContext(), "Playing errors", Toast.LENGTH_SHORT).show();
-                }
+                Intent toPlaying = new Intent(getApplicationContext(), PlayingAct.class);
+                toPlaying.putExtra("path", outputFile);
+                startActivity(toPlaying);
 
             }
         });

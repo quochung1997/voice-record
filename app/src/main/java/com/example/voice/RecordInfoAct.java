@@ -32,8 +32,6 @@ public class RecordInfoAct extends AppCompatActivity {
     TextView labelTxt, idTxt, pathTxt;
 
     boolean isPlaying;
-
-    SoundPool soundPool;
     int soundNumber;
 
     @Override
@@ -43,7 +41,6 @@ public class RecordInfoAct extends AppCompatActivity {
 
         initData();
         initComponents();
-        initSoundPool();
         setButtonEvents();
 
     }
@@ -67,11 +64,6 @@ public class RecordInfoAct extends AppCompatActivity {
         isPlaying = false;
     }
 
-    void initSoundPool() {
-        soundPool = new SoundPool(4, AudioManager.STREAM_VOICE_CALL, 0);
-        soundNumber = soundPool.load(voiceRecord.getPath(), 1);
-    }
-
     void initComponents() {
         playBtn = findViewById(R.id.recordInfo_playBtn);
         deleteBtn = findViewById(R.id.recordInfo_deleteBtn);
@@ -90,7 +82,9 @@ public class RecordInfoAct extends AppCompatActivity {
         playBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                soundPool.play(soundNumber, 0.99f, 0.99f, 0, 0, 1);
+                Intent toPlaying = new Intent(getApplicationContext(), PlayingAct.class);
+                toPlaying.putExtra("path", voiceRecord.getPath());
+                startActivity(toPlaying);
             }
         });
 
