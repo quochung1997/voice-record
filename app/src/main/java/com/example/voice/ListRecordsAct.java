@@ -1,5 +1,6 @@
 package com.example.voice;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -22,6 +23,8 @@ public class ListRecordsAct extends AppCompatActivity {
     ArrayList<VoiceRecord> records;
     User user;
 
+    String userId, label;
+
     final VoiceRecordSqliteDao recordDao = new VoiceRecordSqliteDao(this);
     final UserSqliteDao userDao = new UserSqliteDao(this);
 
@@ -30,10 +33,17 @@ public class ListRecordsAct extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_records);
 
+        loadData();
+        initComponents();
+
+
+    }
+
+    void loadData() {
         Intent thisIntent = getIntent();
 
-        String userId = thisIntent.getStringExtra("id");
-        String label = thisIntent.getStringExtra("label");
+        userId = thisIntent.getStringExtra("id");
+        label = thisIntent.getStringExtra("label");
 
         user = userDao.get(userId);
         ArrayList<VoiceRecord> allRecords = recordDao.getAll();
@@ -45,11 +55,12 @@ public class ListRecordsAct extends AppCompatActivity {
                 records.add(record);
             }
         }
+    }
 
-        RecordAdapter recordAdapter = new RecordAdapter(getApplicationContext(), records);
-
+    void initComponents() {
         listView = findViewById(R.id.listRecords);
 
+        RecordAdapter recordAdapter = new RecordAdapter(getApplicationContext(), records);
         listView.setAdapter(recordAdapter);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -57,9 +68,27 @@ public class ListRecordsAct extends AppCompatActivity {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Intent toRecordInfo = new Intent(getApplicationContext(), RecordInfoAct.class);
                 toRecordInfo.putExtra("recordId", records.get(i).getNumber());
-                startActivity(toRecordInfo);
+                startActivityForResult(toRecordInfo, 0);
             }
         });
-
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        ArrayList<VoiceRecord> allRecords = recordDao.getAll();
+        records = new ArrayList<>();
+
+        for (VoiceRecord record: allRecords) {
+            if (record.getUser().getId().equals(userId) && record.getLabel().equals(label)) {
+                record.setUser(user);
+                records.add(record);
+            }
+        }
+
+        RecordAdapter recordAdapter = new RecordAdapter(getApplicationContext(), records);
+        listView.setAdapter(recordAdapter);
+    }
+
 }
