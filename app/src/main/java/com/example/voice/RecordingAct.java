@@ -11,6 +11,7 @@ import android.content.pm.PackageManager;
 import android.media.AudioManager;
 import android.media.SoundPool;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -57,6 +58,8 @@ public class RecordingAct extends AppCompatActivity {
         replaceBtn = findViewById(R.id.recordingAct_replaceBtn);
         txtTxt = findViewById(R.id.recordingAct_txtTxt);
 
+        replayBtn.setEnabled(false);
+        replaceBtn.setEnabled(false);
         initRecordInfo();
 
 
@@ -81,7 +84,16 @@ public class RecordingAct extends AppCompatActivity {
         replayBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                soundPool.play(soundNumber, 0.99f, 0.99f, 0, 0, 1);
+
+                try {
+                    soundPool = new SoundPool(4, AudioManager.STREAM_VOICE_CALL, 0);
+                    soundNumber = soundPool.load(outputFile, 1);
+                    Log.d("path", outputFile);
+                    soundPool.play(soundNumber, 0.99f, 0.99f, 0, 0, 1);
+                } catch (Exception e) {
+                    Toast.makeText(getApplicationContext(), "Playing errors", Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
 
@@ -94,11 +106,10 @@ public class RecordingAct extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "ENOUGH RECORD", Toast.LENGTH_LONG).show();
             return false;
         } else {
-            int labelIndex = -1;
+            int labelIndex;
 
             while (true) {
                 Random rand = new Random();
-
                 labelIndex = rand.nextInt(VoiceRecord.labels.length);
 
                 if (map.get(VoiceRecord.labels[labelIndex]) < 20) break;
@@ -119,12 +130,8 @@ public class RecordingAct extends AppCompatActivity {
             record.setNumber(recordId);
 
             records.add(record);
-            String gender = user.getGender();
 
             outputFile = record.getPath();
-
-            soundPool = new SoundPool(4, AudioManager.STREAM_VOICE_CALL, 0);
-            soundNumber = soundPool.load(outputFile, 1);
 
             return true;
 

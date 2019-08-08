@@ -69,7 +69,6 @@ public class RecordInfoAct extends AppCompatActivity {
 
     void initSoundPool() {
         soundPool = new SoundPool(4, AudioManager.STREAM_VOICE_CALL, 0);
-
         soundNumber = soundPool.load(voiceRecord.getPath(), 1);
     }
 
@@ -100,11 +99,8 @@ public class RecordInfoAct extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 File file = new File(voiceRecord.getPath());
-
                 file.delete();
-
                 recordDao.delete(voiceRecord.getNumber());
-
                 finish();
             }
         });

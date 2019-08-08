@@ -17,23 +17,24 @@ public class RecordAsync extends AsyncTask<Void, Integer, Void> {
     public RecordAsync(Activity contextParent, String outputFile) {
         this.contextParent = contextParent;
         this.recorder = new WavRecorder(outputFile);
-
-
     }
 
 
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-        recorder.startRecording();
+
         Button startBtn = contextParent.findViewById(R.id.recordingAct_startBtn);
         Button replayBtn = contextParent.findViewById(R.id.recordingAct_replayBtn);
         Button replaceBtn = contextParent.findViewById(R.id.recordingAct_replaceBtn);
+
         startBtn.setEnabled(false);
         replayBtn.setEnabled(false);
         replaceBtn.setEnabled(false);
 
-        SystemClock.sleep(300);
+        SystemClock.sleep(200);
+
+        recorder.startRecording();
     }
 
 
@@ -51,11 +52,8 @@ public class RecordAsync extends AsyncTask<Void, Integer, Void> {
     @Override
     protected void onProgressUpdate(Integer... values) {
         super.onProgressUpdate(values);
-
         ProgressBar progressBar = contextParent.findViewById(R.id.recordingAct_progressBar);
-
         int number = values[0];
-
         progressBar.setProgress(number*10);
 
     }
@@ -67,7 +65,7 @@ public class RecordAsync extends AsyncTask<Void, Integer, Void> {
 
         recorder.stopRecording();
 
-        SystemClock.sleep(300);
+        SystemClock.sleep(200);
 
         Button startBtn = contextParent.findViewById(R.id.recordingAct_startBtn);
         Button replayBtn = contextParent.findViewById(R.id.recordingAct_replayBtn);

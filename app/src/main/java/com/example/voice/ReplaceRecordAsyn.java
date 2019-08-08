@@ -26,9 +26,10 @@ public class ReplaceRecordAsyn extends AsyncTask<Void, Integer, Void> {
         super.onPreExecute();
         recorder.startRecording();
         Button startBtn = contextParent.findViewById(R.id.replaceAct_startBtn);
-        startBtn.setEnabled(false);
 
-        SystemClock.sleep(300);
+        SystemClock.sleep(200);
+
+        startBtn.setEnabled(false);
     }
 
 
@@ -62,7 +63,7 @@ public class ReplaceRecordAsyn extends AsyncTask<Void, Integer, Void> {
 
         recorder.stopRecording();
 
-        SystemClock.sleep(300);
+        SystemClock.sleep(200);
         Button startBtn = contextParent.findViewById(R.id.replaceAct_startBtn);
         ProgressBar progressBar = contextParent.findViewById(R.id.replaceAct_progress);
 

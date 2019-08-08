@@ -5,16 +5,16 @@ import android.os.Environment;
 public class VoiceRecord {
     public static String[] labels = {
             "cộng", "trừ", "nhân", "chia",
-            "không", "một", "hai", "ba", "bốn", "năm", "sáu", "bảy", "tám", "chín", "mười",
-            "mươi", "mốt", "tư", "trăm", "nghìn", "triệu",
-            "tất cả", "xóa"
+            "không", "một", "hai", "ba", "bốn", "năm", "lăm", "sáu", "bảy", "tám", "chín", "mười",
+            "mươi", "mốt", "tư", "trăm", "nghìn", "triệu", "linh",
+            "tất cả", "xóa", "bằng"
     };
 
     public static String[] labels_save = {
             "cong", "tru", "nhan", "chia",
-            "khong", "mot(1)", "hai", "ba", "bon", "nam", "sau", "bay", "tam", "chin", "muoi(10)",
-            "muoi", "mot", "tu", "tram", "nghin", "trieu",
-            "tatca", "xoa"
+            "khong", "mot(1)", "hai", "ba", "bon", "nam", "lam", "sau", "bay", "tam", "chin", "muoi(10)",
+            "muoi", "mot", "tu", "tram", "nghin", "trieu", "linh",
+            "tatca", "xoa", "bang"
     };
 
     User user;

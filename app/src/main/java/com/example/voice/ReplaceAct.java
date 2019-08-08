@@ -35,6 +35,7 @@ public class ReplaceAct extends AppCompatActivity {
         doneBtn = findViewById(R.id.replaceAct_doneBtn);
         startBtn = findViewById(R.id.replaceAct_startBtn);
         txtTxt = findViewById(R.id.replaceAct_txtTxt);
+        txtTxt.setText(text);
     }
 
     void actionPerformed() {
