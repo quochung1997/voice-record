@@ -15,16 +15,13 @@ public class PlayingAsync extends AsyncTask<Void, Integer, Void> {
     String path;
     int soundNumber;
 
-    public PlayingAsync(Activity parentContext, String path) {
+    public PlayingAsync(Activity parentContext) {
         this.parentContext = parentContext;
-        this.path = path;
-        this.soundPool = new SoundPool(4, AudioManager.STREAM_VOICE_CALL, 0);
     }
 
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-        soundNumber = soundPool.load(path, 1);
         SystemClock.sleep(200);
 
         Button btn = parentContext.findViewById(R.id.playingAct_backBtn);
@@ -34,7 +31,6 @@ public class PlayingAsync extends AsyncTask<Void, Integer, Void> {
 
     @Override
     protected Void doInBackground(Void... voids) {
-        soundPool.play(soundNumber, 0.99f, 0.99f, 0, 0, 1);
 
         for (int i = 0; i <= 10; i++) {
             SystemClock.sleep(100);
@@ -63,8 +59,6 @@ public class PlayingAsync extends AsyncTask<Void, Integer, Void> {
 
         Button btn = parentContext.findViewById(R.id.playingAct_backBtn);
         btn.setEnabled(true);
-
-        soundPool.release();
 
         Toast.makeText(parentContext, "Done", Toast.LENGTH_SHORT).show();
 

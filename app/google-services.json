@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "105975434430",
+    "firebase_url": "https://voice-base-command.firebaseio.com",
+    "project_id": "voice-base-command",
+    "storage_bucket": "voice-base-command.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:105975434430:android:81184e524b027d0d",
+        "android_client_info": {
+          "package_name": "com.example.voice"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "105975434430-6g136pl4uqrave4itig2fvk2mnc263j3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.voice",
+            "certificate_hash": "9db20c1d22ce59c7ed335beb5086cc4eaeda6324"
+          }
+        },
+        {
+          "client_id": "105975434430-5pp51m43oeh24jvepopmj5mfjhjt2ttg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBQu2xKAWtK04XCm-xALkbCyR1BrTU3iLg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "105975434430-5pp51m43oeh24jvepopmj5mfjhjt2ttg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

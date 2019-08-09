@@ -20,7 +20,7 @@ public class RecordManagerAct extends AppCompatActivity {
     final UserSqliteDao userDao = new UserSqliteDao(this);
     final VoiceRecordSqliteDao recordDao = new VoiceRecordSqliteDao(this);
 
-    Button startRecordBtn, showRecordsBtn;
+    Button startRecordBtn, showRecordsBtn, uploadBtn;
     TextView idTxt, genderTxt, recordNumberTxt;
 
     User user;
@@ -41,6 +41,7 @@ public class RecordManagerAct extends AppCompatActivity {
     }
 
     void initComponents() {
+        uploadBtn = findViewById(R.id.recordManager_uploadBtn);
         startRecordBtn = findViewById(R.id.recordManager_startRecordBtn);
         showRecordsBtn = findViewById(R.id.recordManager_showRecordsBtn);
         idTxt = findViewById(R.id.recordManager_idTxt);
@@ -69,8 +70,6 @@ public class RecordManagerAct extends AppCompatActivity {
     }
 
     void reloadData() {
-        user = userDao.get(userId);
-
         records = recordDao.getAll();
 
         recordsCount = 0;
@@ -99,6 +98,15 @@ public class RecordManagerAct extends AppCompatActivity {
                 Intent toListLabels = new Intent(getApplicationContext(), ListLabelsAct.class);
                 toListLabels.putExtra("id", userId);
                 startActivityForResult(toListLabels, 0);
+            }
+        });
+
+        uploadBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent toUpload = new Intent(getApplicationContext(), UploadRecordsAct.class);
+                toUpload.putExtra("id", userId);
+                startActivity(toUpload);
             }
         });
     }

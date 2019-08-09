@@ -22,7 +22,6 @@ import com.example.voice.models.VoiceRecord;
 import com.example.voice.recordhelper.WavRecorder;
 import com.example.voice.sqlites.UserSqliteDao;
 import com.example.voice.sqlites.VoiceRecordSqliteDao;
-import com.example.voice.threads.WaitingRunnable;
 
 import java.util.ArrayList;
 import java.util.HashMap;
