@@ -60,10 +60,6 @@ public class PlayingAsync extends AsyncTask<Void, Integer, Void> {
         Button btn = parentContext.findViewById(R.id.playingAct_backBtn),
                 btn2 = parentContext.findViewById(R.id.playingAct_playBtn);
 
-
-        ProgressBar progressBar = parentContext.findViewById(R.id.playingAct_progressBar);
-        //progressBar.setProgress(0);
-
         btn.setEnabled(true);
         btn2.setEnabled(true);
 

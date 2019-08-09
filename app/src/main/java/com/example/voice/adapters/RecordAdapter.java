@@ -44,7 +44,7 @@ public class RecordAdapter extends BaseAdapter {
         TextView recordPath = v.findViewById(R.id.recordLayout_recordPath);
 
         recordTitleTxt.setText(records.get(i).getNumber()+"");
-        recordPath.setText(records.get(i).getPath());
+        recordPath.setText(records.get(i).getFilename());
 
         return v;
     }

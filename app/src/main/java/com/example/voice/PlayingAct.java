@@ -41,7 +41,7 @@ public class PlayingAct extends AppCompatActivity {
 
         path = getIntent().getStringExtra("path");
 
-        pathTxt.setText(path);
+        pathTxt.setText(getFilenameFromPath());
     }
 
     void buttonsActionPerform() {
@@ -61,6 +61,17 @@ public class PlayingAct extends AppCompatActivity {
                 async.execute();
             }
         });
+    }
+
+    String getFilenameFromPath() {
+        String str = "";
+        for (int i = 0; i < path.length(); i++) {
+            if (path.charAt(i) == '/') {
+                str = "";
+            } else str += path.charAt(i);
+        }
+
+        return str;
     }
 
 

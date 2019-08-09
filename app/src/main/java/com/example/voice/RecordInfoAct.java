@@ -72,9 +72,9 @@ public class RecordInfoAct extends AppCompatActivity {
         idTxt = findViewById(R.id.recordInfo_recordIdTxt);
         pathTxt = findViewById(R.id.recordInfo_pathTxt);
 
-        labelTxt.setText(voiceRecord.getLabel());
-        idTxt.setText(voiceRecord.getNumber()+"");
-        pathTxt.setText(voiceRecord.getPath());
+        labelTxt.setText("Label: \""+voiceRecord.getLabel()+"\"");
+        idTxt.setText("ID: "+voiceRecord.getNumber());
+        pathTxt.setText("\""+voiceRecord.getFilename()+"\"");
     }
 
     void setButtonEvents() {

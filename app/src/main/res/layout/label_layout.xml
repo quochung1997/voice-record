@@ -5,16 +5,16 @@
 
     <TextView
         android:id="@+id/labelLayout_labelName"
-        android:layout_width="match_parent"
-        android:layout_height="47dp"
-        android:textColor="#25383C"
+        android:layout_width="398dp"
+        android:layout_height="43dp"
         android:text="TextView"
+        android:textColor="#25383C"
         android:textSize="24sp" />
 
     <TextView
         android:id="@+id/labelLayout_recordsCount"
-        android:layout_width="match_parent"
-        android:textColor="#25383C"
+        android:layout_width="398dp"
         android:layout_height="wrap_content"
-        android:text="TextView" />
+        android:text="TextView"
+        android:textColor="#25383C" />
 </LinearLayout>

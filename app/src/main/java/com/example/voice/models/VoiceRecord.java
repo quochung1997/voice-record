@@ -67,7 +67,7 @@ public class VoiceRecord {
     }
 
     public String getFilename() {
-        return this.getLabelSave()+"_"+user.getId()+"_"+user.getGender()+"_"+
+        return "/voice_records/"+this.getLabelSave()+"_"+user.getId()+"_"+user.getGender()+"_"+
                 String.format("%05d", number)+".wav";
     }
 }
