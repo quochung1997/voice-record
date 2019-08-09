@@ -11,9 +11,6 @@ import android.widget.Toast;
 
 public class PlayingAsync extends AsyncTask<Void, Integer, Void> {
     Activity parentContext;
-    SoundPool soundPool;
-    String path;
-    int soundNumber;
 
     public PlayingAsync(Activity parentContext) {
         this.parentContext = parentContext;
@@ -24,8 +21,11 @@ public class PlayingAsync extends AsyncTask<Void, Integer, Void> {
         super.onPreExecute();
         SystemClock.sleep(200);
 
-        Button btn = parentContext.findViewById(R.id.playingAct_backBtn);
+        Button btn = parentContext.findViewById(R.id.playingAct_backBtn),
+        btn2 = parentContext.findViewById(R.id.playingAct_playBtn);
+
         btn.setEnabled(false);
+        btn2.setEnabled(false);
 
     }
 
@@ -57,8 +57,15 @@ public class PlayingAsync extends AsyncTask<Void, Integer, Void> {
 
         SystemClock.sleep(200);
 
-        Button btn = parentContext.findViewById(R.id.playingAct_backBtn);
+        Button btn = parentContext.findViewById(R.id.playingAct_backBtn),
+                btn2 = parentContext.findViewById(R.id.playingAct_playBtn);
+
+
+        ProgressBar progressBar = parentContext.findViewById(R.id.playingAct_progressBar);
+        //progressBar.setProgress(0);
+
         btn.setEnabled(true);
+        btn2.setEnabled(true);
 
         Toast.makeText(parentContext, "Done", Toast.LENGTH_SHORT).show();
 

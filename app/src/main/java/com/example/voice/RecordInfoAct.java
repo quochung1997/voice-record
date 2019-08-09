@@ -32,7 +32,6 @@ public class RecordInfoAct extends AppCompatActivity {
     TextView labelTxt, idTxt, pathTxt;
 
     boolean isPlaying;
-    int soundNumber;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
