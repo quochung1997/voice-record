@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.voice.models.User;
@@ -18,6 +20,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
@@ -29,6 +32,8 @@ public class UploadRecordsAct extends AppCompatActivity {
     final VoiceRecordSqliteDao recordDao = new VoiceRecordSqliteDao(this);
 
     Button uploadBtn;
+    TextView uploadStatus;
+    ProgressBar progressBar;
     String userId;
     ArrayList<VoiceRecord> records;
 
@@ -38,6 +43,8 @@ public class UploadRecordsAct extends AppCompatActivity {
     UploadTask uploadTask;
 
     int k;
+    String parentDir;
+    int recordsCount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,9 +59,7 @@ public class UploadRecordsAct extends AppCompatActivity {
 
     void loadData() {
         userId = getIntent().getStringExtra("id");
-
         User user = userDao.get(userId);
-
         ArrayList<VoiceRecord> listRecords = recordDao.getAll();
         records = new ArrayList<>();
 
@@ -68,14 +73,17 @@ public class UploadRecordsAct extends AppCompatActivity {
 
     void initComponents() {
         uploadBtn = findViewById(R.id.uploadAct_uploadBtn);
+        progressBar = findViewById(R.id.uploadAct_progressBar);
+        uploadStatus = findViewById(R.id.uploadAct_uploadStatusTxt);
+
+        uploadStatus.setText("Uploaded: 0/"+records.size()+" record(s)");
     }
 
     void buttonsAction() {
         uploadBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                k = 0;
-                uploadFile();
+                uploadAllFiles();
             }
         });
     }
@@ -87,13 +95,25 @@ public class UploadRecordsAct extends AppCompatActivity {
         fbDatabase = FirebaseDatabase.getInstance();
     }
 
+    void uploadAllFiles() {
+        String currentTimeStr = System.currentTimeMillis()+"";
+        parentDir = userId+"_"+currentTimeStr;
+        k = 0;
+        recordsCount = records.size();
+        progressBar.setProgress(0);
+
+        uploadFile();
+    }
+
     void uploadFile() {
-        VoiceRecord record = records.get(0);
-        StorageReference reference = fbStorage.getReference();
+
+        final StorageReference reference = fbStorage.getReference();
+
+        VoiceRecord record = records.get(k);
 
         Uri file = Uri.fromFile(new File(record.getPath()));
         Log.d("last path", file.getLastPathSegment());
-        StorageReference riversRef = reference.child(userId).child(file.getLastPathSegment());
+        StorageReference riversRef = reference.child(parentDir).child(file.getLastPathSegment());
         uploadTask = riversRef.putFile(file);
 
         uploadTask.addOnFailureListener(new OnFailureListener() {
@@ -104,7 +124,15 @@ public class UploadRecordsAct extends AppCompatActivity {
         }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                Toast.makeText(getApplicationContext(), "success", Toast.LENGTH_SHORT).show();
+                k++;
+                uploadStatus.setText("Uploaded: "+k+"/"+recordsCount+" record(s)");
+                progressBar.setProgress(k*100/recordsCount);
+                if (k == recordsCount) {
+                    Toast.makeText(getApplicationContext(), "success", Toast.LENGTH_SHORT).show();
+                    uploadBtn.setEnabled(false);
+                } else {
+                    uploadFile();
+                }
             }
         });
 
