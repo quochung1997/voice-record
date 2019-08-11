@@ -5,8 +5,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.example.voice.models.User;
 import com.example.voice.models.VoiceRecord;
@@ -32,6 +34,9 @@ public class UploadRecordsAct extends AppCompatActivity {
 
     FirebaseStorage fbStorage;
     FirebaseDatabase fbDatabase;
+
+    UploadTask uploadTask;
+
     int k;
 
     @Override
@@ -83,26 +88,25 @@ public class UploadRecordsAct extends AppCompatActivity {
     }
 
     void uploadFile() {
-
-        if (k >= records.size()) return;
-
-        VoiceRecord record = records.get(k);
-
+        VoiceRecord record = records.get(0);
         StorageReference reference = fbStorage.getReference();
 
-        reference.child("Uploads").child(record.getFilename()).putFile(Uri.fromFile(new File(record.getPath())))
-            .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>(){
+        Uri file = Uri.fromFile(new File(record.getPath()));
+        Log.d("last path", file.getLastPathSegment());
+        StorageReference riversRef = reference.child(userId).child(file.getLastPathSegment());
+        uploadTask = riversRef.putFile(file);
 
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    k++;
-                    uploadFile();
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    e.printStackTrace();
-                }
-            });
+        uploadTask.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                Toast.makeText(getApplicationContext(), "failed", Toast.LENGTH_SHORT).show();
+            }
+        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                Toast.makeText(getApplicationContext(), "success", Toast.LENGTH_SHORT).show();
+            }
+        });
+
     }
 }
