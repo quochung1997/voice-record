@@ -46,7 +46,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:text="ID"
-        android:textSize="24sp"
+        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintStart_toStartOf="parent"
@@ -96,5 +96,6 @@
         android:text="upload"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/recordManager_showRecordsBtn" />
+        app:layout_constraintTop_toBottomOf="@+id/recordManager_showRecordsBtn"
+        android:drawableRight="@drawable/upload_resize"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

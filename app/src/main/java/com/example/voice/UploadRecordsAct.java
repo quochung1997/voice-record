@@ -102,6 +102,8 @@ public class UploadRecordsAct extends AppCompatActivity {
         recordsCount = records.size();
         progressBar.setProgress(0);
 
+        uploadBtn.setEnabled(false);
+
         uploadFile();
     }
 
@@ -129,7 +131,6 @@ public class UploadRecordsAct extends AppCompatActivity {
                 progressBar.setProgress(k*100/recordsCount);
                 if (k == recordsCount) {
                     Toast.makeText(getApplicationContext(), "success", Toast.LENGTH_SHORT).show();
-                    uploadBtn.setEnabled(false);
                 } else {
                     uploadFile();
                 }

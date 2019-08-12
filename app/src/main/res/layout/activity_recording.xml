@@ -23,19 +23,19 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/recordingAct_startBtn"
+        android:id="@+id/recordingAct_nextBtn"
         android:layout_width="155dp"
         android:layout_height="45dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
-        android:layout_marginTop="56dp"
+        android:layout_marginTop="28dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:text="next"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/recordingAct_progressBar" />
+        app:layout_constraintTop_toBottomOf="@+id/recordingAct_progressBar"
+        android:drawableRight="@drawable/next_resizeimage_2" />
 
     <ProgressBar
         android:id="@+id/recordingAct_progressBar"
@@ -58,13 +58,14 @@
         android:layout_height="45dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="28dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        android:text="replay"
+        android:text="play"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/recordingAct_startBtn" />
+        app:layout_constraintTop_toBottomOf="@+id/recordingAct_replaceBtn"
+        android:drawableRight="@drawable/play_resize"/>
 
     <Button
         android:id="@+id/recordingAct_replaceBtn"
@@ -72,12 +73,26 @@
         android:layout_height="45dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        android:text="replace"
+        android:text="again"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/recordingAct_replayBtn" />
+        app:layout_constraintTop_toBottomOf="@+id/recordingAct_startRecordBtn"
+        android:drawableRight="@drawable/replay_resize"/>
+
+    <Button
+        android:id="@+id/recordingAct_startRecordBtn"
+        android:layout_width="155dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:text="start"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/recordingAct_nextBtn"
+        android:drawableRight="@drawable/start2_resize"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

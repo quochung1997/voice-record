@@ -24,7 +24,7 @@ public class RecordAsync extends AsyncTask<Void, Integer, Void> {
     protected void onPreExecute() {
         super.onPreExecute();
 
-        Button startBtn = contextParent.findViewById(R.id.recordingAct_startBtn);
+        Button startBtn = contextParent.findViewById(R.id.recordingAct_nextBtn);
         Button replayBtn = contextParent.findViewById(R.id.recordingAct_replayBtn);
         Button replaceBtn = contextParent.findViewById(R.id.recordingAct_replaceBtn);
 
@@ -67,7 +67,7 @@ public class RecordAsync extends AsyncTask<Void, Integer, Void> {
 
         SystemClock.sleep(200);
 
-        Button startBtn = contextParent.findViewById(R.id.recordingAct_startBtn);
+        Button startBtn = contextParent.findViewById(R.id.recordingAct_nextBtn);
         Button replayBtn = contextParent.findViewById(R.id.recordingAct_replayBtn);
         Button replaceBtn = contextParent.findViewById(R.id.recordingAct_replaceBtn);
 

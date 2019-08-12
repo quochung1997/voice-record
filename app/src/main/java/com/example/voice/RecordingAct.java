@@ -1,17 +1,10 @@
 package com.example.voice;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 
-import android.Manifest;
-import android.app.Activity;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.media.AudioManager;
 import android.media.SoundPool;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -19,7 +12,6 @@ import android.widget.Toast;
 
 import com.example.voice.models.User;
 import com.example.voice.models.VoiceRecord;
-import com.example.voice.recordhelper.WavRecorder;
 import com.example.voice.sqlites.UserSqliteDao;
 import com.example.voice.sqlites.VoiceRecordSqliteDao;
 
@@ -36,15 +28,15 @@ public class RecordingAct extends AppCompatActivity {
     User user;
     String userId;
 
-    Button startBtn, replaceBtn, replayBtn;
+    Button nextBtn, replaceBtn, replayBtn, startRecordBtn;
     TextView txtTxt;
 
     HashMap<String, Integer> map;
 
     String outputFile;
 
-    SoundPool soundPool;
-    int soundNumber;
+    String currentLabel;
+    int labelIndex;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,9 +44,10 @@ public class RecordingAct extends AppCompatActivity {
         setContentView(R.layout.activity_recording);
 
 
-        startBtn = findViewById(R.id.recordingAct_startBtn);
+        nextBtn = findViewById(R.id.recordingAct_nextBtn);
         replayBtn = findViewById(R.id.recordingAct_replayBtn);
         replaceBtn = findViewById(R.id.recordingAct_replaceBtn);
+        startRecordBtn = findViewById(R.id.recordingAct_startRecordBtn);
         txtTxt = findViewById(R.id.recordingAct_txtTxt);
 
         replayBtn.setEnabled(false);
@@ -62,13 +55,12 @@ public class RecordingAct extends AppCompatActivity {
         initRecordInfo();
 
 
-        startBtn.setOnClickListener(new View.OnClickListener() {
+        nextWord();
+
+        nextBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (nextWord()) {
-                    RecordAsync recordAsync = new RecordAsync(RecordingAct.this, outputFile);
-                    recordAsync.execute();
-                }
+                nextWord();
             }
         });
 
@@ -91,6 +83,31 @@ public class RecordingAct extends AppCompatActivity {
             }
         });
 
+        startRecordBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int num = map.get(currentLabel)+1;
+                map.put(currentLabel, num);
+
+                VoiceRecord record = new VoiceRecord();
+                record.setUser(new User(userId, user.getGender()));
+                record.setLabel(labelIndex);
+
+                int recordId = recordDao.insert(record);
+
+                record.setNumber(recordId);
+
+                records.add(record);
+
+                outputFile = record.getPath();
+
+                startRecordBtn.setEnabled(false);
+
+                RecordAsync recordAsync = new RecordAsync(RecordingAct.this, outputFile);
+                recordAsync.execute();
+            }
+        });
+
 
     }
 
@@ -100,8 +117,6 @@ public class RecordingAct extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "ENOUGH RECORD", Toast.LENGTH_LONG).show();
             return false;
         } else {
-            int labelIndex;
-
             while (true) {
                 Random rand = new Random();
                 labelIndex = rand.nextInt(VoiceRecord.labels.length);
@@ -109,23 +124,12 @@ public class RecordingAct extends AppCompatActivity {
                 if (map.get(VoiceRecord.labels[labelIndex]) < 20) break;
             }
 
-            String label = VoiceRecord.labels[labelIndex];
+            currentLabel = VoiceRecord.labels[labelIndex];
+            txtTxt.setText(currentLabel);
 
-            int num = map.get(label)+1;
-            txtTxt.setText(label);
-            map.put(label, num);
-
-            VoiceRecord record = new VoiceRecord();
-            record.setUser(new User(userId, user.getGender()));
-            record.setLabel(labelIndex);
-
-            int recordId = recordDao.insert(record);
-
-            record.setNumber(recordId);
-
-            records.add(record);
-
-            outputFile = record.getPath();
+            startRecordBtn.setEnabled(true);
+            replaceBtn.setEnabled(false);
+            replayBtn.setEnabled(false);
 
             return true;
 
