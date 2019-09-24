@@ -10,20 +10,19 @@
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".UploadRecordsAct"></activity>
-        <activity android:name=".PlayingAct" />
-        <activity android:name=".ReplaceAct" />
-        <activity android:name=".RecordInfoAct" />
+        <activity android:name=".UploadRecordsAct" android:label="Upload"></activity>
+        <activity android:name=".PlayingAct" android:label="Playing"/>
+        <activity android:name=".ReplaceAct" android:label="Replace"/>
+        <activity android:name=".RecordInfoAct" android:label="Record Information"/>
         <activity android:name=".ListRecordsAct" />
-        <activity android:name=".ListLabelsAct" />
-        <activity android:name=".RecordingAct" />
-        <activity android:name=".RecordManagerAct" />
-        <activity android:name=".RegisAct" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".ListLabelsAct" android:label="List Labels"/>
+        <activity android:name=".RecordingAct" android:label="Recording"/>
+        <activity android:name=".RecordManagerAct" android:label="Record Manager"/>
+        <activity android:name=".RegisAct" android:label="Add Email"/>
+        <activity android:name=".MainActivity" android:label="Login">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

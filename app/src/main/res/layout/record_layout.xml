@@ -6,15 +6,17 @@
     <TextView
         android:id="@+id/recordLayout_recordTitle"
         android:layout_width="match_parent"
-        android:layout_height="44dp"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
         android:text="TextView"
-        android:textColor="#25383C"
+        android:textColor="#000000"
         android:textSize="24sp" />
 
     <TextView
         android:id="@+id/recordLayout_recordPath"
         android:layout_width="match_parent"
-        android:textColor="#25383C"
+        android:textColor="#000000"
+        android:padding="5dp"
         android:layout_height="wrap_content"
         android:text="TextView" />
 </LinearLayout>

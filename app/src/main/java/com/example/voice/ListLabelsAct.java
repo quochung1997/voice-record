@@ -33,6 +33,8 @@ public class ListLabelsAct extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_labels);
 
+        setTitle("List Labels");
+
         loadData();
         initComponents();
 

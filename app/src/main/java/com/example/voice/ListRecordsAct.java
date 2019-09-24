@@ -36,6 +36,7 @@ public class ListRecordsAct extends AppCompatActivity {
         loadData();
         initComponents();
 
+        setTitle(label);
 
     }
 
